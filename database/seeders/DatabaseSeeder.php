@@ -13,13 +13,18 @@ class DatabaseSeeder extends Seeder
     /**
      * Seed the application's database.
      */
-    public function run(): void
-    {
-        // User::factory(10)->create();
+public function run(): void
+{
+    // Створення адміна
+    User::factory()->create([
+        'name' => 'Власник Магазину',
+        'email' => 'admin@shop.com',
+        'password' => bcrypt('password'), // пароль: password
+        'is_admin' => true, // <--- ВАЖЛИВО
+    ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-    }
+    // Тут можна викликати і ProductSeeder
+    $this->call(ProductSeeder::class);
+}
+
 }
