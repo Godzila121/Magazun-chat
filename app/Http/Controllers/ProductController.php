@@ -52,4 +52,17 @@ class ProductController extends Controller
         // Повертаємось на головну з повідомленням
         return redirect()->route('products.index')->with('success', 'Товар успішно створено!');
     }
+public function destroy($id)
+    {
+        $product = Product::findOrFail($id);
+
+        // Видаляємо файл картинки з диска, щоб не займати місце (опціонально)
+        if ($product->image && file_exists(public_path($product->image))) {
+            unlink(public_path($product->image));
+        }
+
+        $product->delete(); // Видаляємо запис з БД
+
+        return redirect()->route('products.index')->with('success', 'Товар успішно видалено!');
+    }
 }
