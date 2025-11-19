@@ -60,9 +60,9 @@
 
                     <div class="text-right">
                         <span class="text-xl font-bold block">Загалом: {{ $total }} ₴</span>
-                        <button class="mt-2 bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">
+                        <a href="{{ route('order.checkout') }}" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 inline-block">
                             Оформити замовлення
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>

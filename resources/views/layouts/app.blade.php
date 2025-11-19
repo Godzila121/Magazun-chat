@@ -87,5 +87,23 @@
             {{-- Підтримка Breeze компонентів, якщо десь використовуються --}}
             {{ $slot ?? '' }}
         </main>
+    {{-- Кнопка чату --}}
+    @auth
+        @if(auth()->user()->is_admin)
+            {{-- Кнопка для Адміна веде до списку діалогів --}}
+            <a href="{{ route('admin.chat.index') }}" class="fixed bottom-5 right-5 bg-purple-600 text-white p-4 rounded-full shadow-lg hover:bg-purple-700 transition flex items-center justify-center z-50" title="Повідомлення клієнтів">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+                </svg>
+            </a>
+        @else
+            {{-- Кнопка для Клієнта веде в його чат --}}
+            <a href="{{ route('chat.index') }}" class="fixed bottom-5 right-5 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition flex items-center justify-center z-50" title="Написати підтримці">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                </svg>
+            </a>
+        @endif
+    @endauth
     </body>
 </html>

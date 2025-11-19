@@ -65,4 +65,49 @@ public function destroy($id)
 
         return redirect()->route('products.index')->with('success', 'Товар успішно видалено!');
     }
+// 1. Показати сторінку одного товару
+    public function show($id)
+    {
+        $product = Product::findOrFail($id);
+        return view('products.show', compact('product'));
+    }
+
+    // 2. Показати форму редагування (для Адміна)
+    public function edit($id)
+    {
+        $product = Product::findOrFail($id);
+        return view('products.edit', compact('product'));
+    }
+
+    // 3. Оновити дані товару (для Адміна)
+    public function update(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required',
+            'price' => 'required|numeric',
+            'description' => 'nullable',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $data = $request->only(['name', 'price', 'description']);
+
+        // Якщо завантажили нову картинку
+        if ($request->hasFile('image')) {
+            // Видаляємо стару, якщо вона є
+            if ($product->image && file_exists(public_path($product->image))) {
+                unlink(public_path($product->image));
+            }
+
+            // Зберігаємо нову
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->move(public_path('images'), $imageName);
+            $data['image'] = 'images/' . $imageName;
+        }
+
+        $product->update($data);
+
+        return redirect()->route('products.show', $product->id)->with('success', 'Товар оновлено!');
+    }
 }
